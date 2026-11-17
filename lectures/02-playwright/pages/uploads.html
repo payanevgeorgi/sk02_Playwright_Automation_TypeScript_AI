@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>File uploads | Form &amp; Field</title>
+	<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+	<header class="site-header"><a class="brand" href="index.html">Form &amp; Field.</a><a href="index.html">All examples</a></header>
+	<main>
+		<p class="eyebrow">04 / File uploads</p>
+		<h1>Bring your work along.</h1>
+		<p class="muted">Select files to inspect their names and sizes. Files stay on your device; their contents are not read or uploaded.</p>
+		<section class="panel" aria-label="Single file upload">
+			<h2>Your resume</h2>
+			<label for="resume">Resume</label>
+			<input id="resume" name="resume" type="file">
+			<p id="resume-result" class="status" role="status">No resume selected.</p>
+			<button id="clear-resume" type="button">Clear resume</button>
+		</section>
+		<section class="panel" aria-label="Multiple file upload">
+			<h2>Supporting documents</h2>
+			<label for="documents">Documents</label>
+			<input id="documents" name="documents" type="file" multiple>
+			<p id="documents-result" role="status">No documents selected.</p>
+			<ul id="documents-list" aria-label="Selected documents"></ul>
+			<button id="clear-documents" type="button">Clear documents</button>
+		</section>
+		<p class="hint">Targets: <code>#resume</code> and <code>#documents</code>. Practice <code>setInputFiles()</code> with one file, several files, and an empty array.</p>
+	</main>
+	<footer>Form &amp; Field / Use demo files only.</footer>
+	<script>
+		const resume = document.querySelector('#resume');
+		const documents = document.querySelector('#documents');
+		function renderResume() {
+			const file = resume.files[0];
+			document.querySelector('#resume-result').textContent = file
+				? `Selected resume: ${file.name} (${file.size} bytes).`
+				: 'No resume selected.';
+		}
+		function renderDocuments() {
+			const list = document.querySelector('#documents-list');
+			list.replaceChildren();
+			for (const file of documents.files) {
+				const item = document.createElement('li');
+				item.textContent = `${file.name} (${file.size} bytes)`;
+				list.append(item);
+			}
+			const count = documents.files.length;
+			document.querySelector('#documents-result').textContent = count
+				? `${count} document${count === 1 ? '' : 's'} selected.`
+				: 'No documents selected.';
+		}
+		resume.addEventListener('change', renderResume);
+		documents.addEventListener('change', renderDocuments);
+		document.querySelector('#clear-resume').addEventListener('click', () => {
+			resume.value = '';
+			renderResume();
+		});
+		document.querySelector('#clear-documents').addEventListener('click', () => {
+			documents.value = '';
+			renderDocuments();
+		});
+	</script>
+</body>
+</html>

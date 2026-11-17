@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Dropdowns | Form &amp; Field</title>
+	<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+	<header class="site-header"><a class="brand" href="index.html">Form &amp; Field.</a><a href="index.html">All examples</a></header>
+	<main>
+		<p class="eyebrow">01 / Dropdowns</p>
+		<h1>Choose your destination.</h1>
+		<p class="muted">Practice native single and multiple selects using values, labels, and option indexes.</p>
+		<section class="panel" aria-label="Delivery preferences">
+			<label for="country">Country</label>
+			<select id="country" name="country">
+				<option value="">Choose a country</option>
+				<option value="usa">United States</option>
+				<option value="canada">Canada</option>
+				<option value="uk">United Kingdom</option>
+				<option value="bulgaria">Bulgaria</option>
+			</select>
+			<p id="country-result" class="status" role="status">No country selected.</p>
+			<label for="countries">Countries you would like to visit</label>
+			<p id="countries-hint" class="hint">Choose several options with Command (macOS) or Control (Windows/Linux), or use Shift for a range.</p>
+			<select id="countries" name="countries" multiple size="4" aria-describedby="countries-hint">
+				<option value="usa">United States</option>
+				<option value="canada">Canada</option>
+				<option value="uk">United Kingdom</option>
+				<option value="bulgaria">Bulgaria</option>
+			</select>
+			<p id="countries-result" class="status" role="status">No destinations selected.</p>
+		</section>
+		<p class="hint">Targets: <code>#country</code>, <code>#countries</code>. The placeholder is index 0 in the single select.</p>
+	</main>
+	<footer>Form &amp; Field / Lecture 2</footer>
+	<script>
+		const country = document.querySelector('#country');
+		const countries = document.querySelector('#countries');
+		country.addEventListener('change', () => {
+			document.querySelector('#country-result').textContent = country.value
+				? `Selected country: ${country.selectedOptions[0].textContent} (${country.value}).`
+				: 'No country selected.';
+		});
+		countries.addEventListener('change', () => {
+			const labels = Array.from(countries.selectedOptions, (option) => option.textContent);
+			document.querySelector('#countries-result').textContent = labels.length
+				? `Selected destinations: ${labels.join(', ')}.`
+				: 'No destinations selected.';
+		});
+	</script>
+</body>
+</html>

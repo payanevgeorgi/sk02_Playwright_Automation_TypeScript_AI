@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Tables &amp; selectors | Form &amp; Field</title>
+	<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+	<header class="site-header"><a class="brand" href="index.html">Form &amp; Field.</a><a href="index.html">All examples</a></header>
+	<main>
+		<p class="eyebrow">03 / Tables &amp; selectors</p>
+		<h1>Meet the studio.</h1>
+		<p class="muted">Count rows, extract names, scope repeated Edit buttons to a row, and compare CSS, text, role, and XPath locators.</p>
+		<div class="table-wrap">
+			<table id="users-table" data-testid="users-table">
+				<caption>Studio members</caption>
+				<thead><tr><th scope="col">ID</th><th scope="col">Name</th><th scope="col">Email</th><th scope="col">Role</th><th scope="col">Status</th><th scope="col">Actions</th></tr></thead>
+				<tbody>
+					<tr data-user-id="1"><td>1</td><td>John Doe</td><td>john@example.com</td><td class="member-role">Admin</td><td>Active</td><td><button class="edit-button" type="button" data-testid="edit-john">Edit</button></td></tr>
+					<tr data-user-id="2"><td>2</td><td>Jane Smith</td><td>jane@example.com</td><td class="member-role">Editor</td><td>Active</td><td><button class="edit-button" type="button" data-testid="edit-jane">Edit</button></td></tr>
+					<tr data-user-id="3"><td>3</td><td>Alex Morgan</td><td>alex@example.com</td><td class="member-role">Viewer</td><td>Inactive</td><td><button class="edit-button" type="button" data-testid="edit-alex">Edit</button></td></tr>
+					<tr data-user-id="4"><td>4</td><td>Sam Lee</td><td>sam@example.com</td><td class="member-role">Editor</td><td>Active</td><td><button class="edit-button" type="button" data-testid="edit-sam">Edit</button></td></tr>
+				</tbody>
+			</table>
+		</div>
+		<form id="edit-form" class="panel" aria-labelledby="edit-heading" hidden>
+			<h2 id="edit-heading">Edit member</h2>
+			<p>Member: <strong id="editing-name"></strong></p>
+			<div>
+				<label for="member-role">Member role</label>
+				<select id="member-role" name="role"><option value="Admin">Admin</option><option value="Editor">Editor</option><option value="Viewer">Viewer</option></select>
+			</div>
+			<div class="actions"><button id="save-button" type="submit">Save changes</button><button id="cancel-button" type="button">Cancel</button></div>
+		</form>
+		<p id="table-result" class="status" role="status" hidden></p>
+		<p class="hint">Use <code>#users-table tbody tr</code> for data rows only. Playwright <code>nth(2)</code> and CSS <code>tbody tr:nth-child(3)</code> both target Alex.</p>
+		<p class="hint">XPath practice: <code>//button[text()="Edit"]/ancestor::tr</code>. Attribute practice: <code>[id$="button"]</code>. Combinators: <code>form &gt; div</code> and <code>label + select</code>.</p>
+	</main>
+	<footer>Form &amp; Field / Changes last until the page is reloaded.</footer>
+	<script>
+		const form = document.querySelector('#edit-form');
+		const role = document.querySelector('#member-role');
+		const result = document.querySelector('#table-result');
+		let editingRow;
+		let editButton;
+		document.querySelectorAll('.edit-button').forEach((button) => {
+			button.addEventListener('click', () => {
+				editingRow = button.closest('tr');
+				editButton = button;
+				document.querySelector('#editing-name').textContent = editingRow.cells[1].textContent;
+				role.value = editingRow.querySelector('.member-role').textContent;
+				result.hidden = true;
+				form.hidden = false;
+				role.focus();
+			});
+		});
+		form.addEventListener('submit', (event) => {
+			event.preventDefault();
+			editingRow.querySelector('.member-role').textContent = role.value;
+			result.textContent = `Updated ${editingRow.cells[1].textContent}: ${role.value}.`;
+			result.hidden = false;
+			form.hidden = true;
+			editButton.focus();
+		});
+		document.querySelector('#cancel-button').addEventListener('click', () => {
+			form.hidden = true;
+			editButton.focus();
+		});
+	</script>
+</body>
+</html>

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Registration preferences | Form &amp; Field</title>
+	<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+	<header class="site-header"><a class="brand" href="index.html">Form &amp; Field.</a><a href="index.html">All examples</a></header>
+	<main>
+		<p class="eyebrow">02 / Checkboxes &amp; radio buttons</p>
+		<h1>Make it your own.</h1>
+		<p class="muted">Practice check, uncheck, and radio group exclusivity. Accepting the terms is required.</p>
+		<form id="registration-form" novalidate>
+			<fieldset>
+				<legend>Your interests</legend>
+				<label class="choice" for="interest-design"><input id="interest-design" name="interests" type="checkbox" value="Design">Design</label>
+				<label class="choice" for="interest-testing"><input id="interest-testing" name="interests" type="checkbox" value="Testing">Testing</label>
+				<label class="choice" for="interest-development"><input id="interest-development" name="interests" type="checkbox" value="Development">Development</label>
+			</fieldset>
+			<fieldset>
+				<legend>Experience level</legend>
+				<label class="choice" for="exp-beginner"><input id="exp-beginner" name="experience" type="radio" value="Beginner" checked>Beginner</label>
+				<label class="choice" for="exp-intermediate"><input id="exp-intermediate" name="experience" type="radio" value="Intermediate">Intermediate</label>
+				<label class="choice" for="exp-advanced"><input id="exp-advanced" name="experience" type="radio" value="Advanced">Advanced</label>
+			</fieldset>
+			<div class="panel">
+				<label class="choice" for="newsletter"><input id="newsletter" name="newsletter" type="checkbox" checked>Send me the newsletter</label>
+				<label class="choice" for="terms"><input id="terms" name="terms" type="checkbox" aria-describedby="terms-error" required>Accept Terms</label>
+				<p id="terms-error" class="error" role="alert" hidden>Please accept the terms before registering.</p>
+				<div class="actions"><button id="submit-button" data-testid="submit-btn" type="submit">Submit Registration</button></div>
+			</div>
+		</form>
+		<p id="registration-result" class="status" role="status" hidden></p>
+		<p class="hint">Selector practice: <code>[id^="interest"]</code>, <code>[id*="exp"]</code>, <code>input[name="experience"]:checked</code>.</p>
+	</main>
+	<footer>Form &amp; Field / Demo registration only.</footer>
+	<script>
+		const form = document.querySelector('#registration-form');
+		const terms = document.querySelector('#terms');
+		const error = document.querySelector('#terms-error');
+		const result = document.querySelector('#registration-result');
+		form.addEventListener('change', () => {
+			result.hidden = true;
+			error.hidden = terms.checked;
+			terms.setAttribute('aria-invalid', String(!terms.checked));
+		});
+		form.addEventListener('submit', (event) => {
+			event.preventDefault();
+			error.hidden = terms.checked;
+			terms.setAttribute('aria-invalid', String(!terms.checked));
+			result.hidden = true;
+			if (!terms.checked) {
+				terms.focus();
+				return;
+			}
+			const interests = Array.from(form.querySelectorAll('[name="interests"]:checked'), (input) => input.value);
+			const experience = form.querySelector('[name="experience"]:checked').value;
+			result.textContent = `Registration complete.\nInterests: ${interests.join(', ') || 'None'}.\nExperience: ${experience}.\nNewsletter: ${document.querySelector('#newsletter').checked ? 'Yes' : 'No'}.`;
+			result.hidden = false;
+		});
+	</script>
+</body>
+</html>

@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Dynamic content | Form &amp; Field</title>
+	<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+	<header class="site-header"><a class="brand" href="index.html">Form &amp; Field.</a><a href="index.html">All examples</a></header>
+	<main>
+		<p class="eyebrow">05 / Dynamic content &amp; waits</p>
+		<h1>Good things take a moment.</h1>
+		<p class="muted">These deliberate local delays simulate asynchronous UI updates without network dependencies.</p>
+		<section class="panel" aria-label="Asynchronous collection">
+			<h2>The latest collection</h2>
+			<button id="load-button" type="button">Load collection</button>
+			<p id="loading" role="status" hidden>Loading collection...</p>
+			<section id="content" aria-labelledby="content-heading" aria-busy="false" hidden>
+				<h3 id="content-heading">Ready to explore</h3>
+				<ul id="items" aria-label="Collection items"></ul>
+			</section>
+		</section>
+		<section class="panel" aria-label="Delayed button">
+			<h2>Prepare a demo order</h2>
+			<p class="hint">Start preparation, then wait for the Place demo order button to become enabled.</p>
+			<div class="actions"><button id="prepare-button" type="button">Prepare order</button><button id="place-order-button" type="button" disabled>Place demo order</button></div>
+			<p id="order-status" class="status" role="status">Order not prepared.</p>
+		</section>
+		<p class="hint">Wait for <code>#loading</code> to be hidden, <code>#content</code> to be visible, or <code>.item</code> to have a count of 6. Prefer locator assertions and auto-waiting over fixed sleeps.</p>
+	</main>
+	<footer>Form &amp; Field / Simulated loading. No real orders.</footer>
+	<script>
+		const loadButton = document.querySelector('#load-button');
+		const loading = document.querySelector('#loading');
+		const content = document.querySelector('#content');
+		const items = document.querySelector('#items');
+		loadButton.addEventListener('click', () => {
+			loadButton.disabled = true;
+			loading.hidden = false;
+			content.hidden = true;
+			content.setAttribute('aria-busy', 'true');
+			items.replaceChildren();
+			window.setTimeout(() => {
+				for (const name of ['Everyday Notebook', 'Studio Mug', 'Reading Lamp', 'Woven Market Bag', 'Desk Plant', 'Daily Bottle']) {
+					const item = document.createElement('li');
+					item.className = 'item';
+					item.textContent = name;
+					items.append(item);
+				}
+				content.setAttribute('aria-busy', 'false');
+				content.hidden = false;
+				loading.hidden = true;
+				loadButton.disabled = false;
+				loadButton.textContent = 'Reload collection';
+			}, 900);
+		});
+		const prepareButton = document.querySelector('#prepare-button');
+		const placeButton = document.querySelector('#place-order-button');
+		const orderStatus = document.querySelector('#order-status');
+		prepareButton.addEventListener('click', () => {
+			prepareButton.disabled = true;
+			placeButton.disabled = true;
+			orderStatus.textContent = 'Preparing your order...';
+			window.setTimeout(() => {
+				orderStatus.textContent = 'Your demo order is ready.';
+				placeButton.disabled = false;
+			}, 700);
+		});
+		placeButton.addEventListener('click', () => {
+			orderStatus.textContent = 'Demo order placed.';
+			placeButton.disabled = true;
+			prepareButton.disabled = false;
+		});
+	</script>
+</body>
+</html>

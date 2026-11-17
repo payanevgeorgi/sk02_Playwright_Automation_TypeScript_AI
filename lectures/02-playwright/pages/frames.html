@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Iframes | Form &amp; Field</title>
+	<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+	<header class="site-header"><a class="brand" href="index.html">Form &amp; Field.</a><a href="index.html">All examples</a></header>
+	<main>
+		<p class="eyebrow">06 / Iframes</p>
+		<h1>A document within a document.</h1>
+		<p class="muted">The note form below belongs to a separate local HTML document. Scope its locators through the iframe.</p>
+		<section class="panel" aria-labelledby="widget-heading">
+			<h2 id="widget-heading">Studio note widget</h2>
+			<iframe id="my-frame" name="studio-note" title="Studio note form" src="frame-content.html"></iframe>
+		</section>
+		<p class="hint">Start with <code>page.frameLocator('#my-frame')</code>, then locate <code>#frame-input</code>, <code>#frame-button</code>, and <code>#result</code> inside the frame.</p>
+	</main>
+	<footer>Form &amp; Field / Local iframe example.</footer>
+</body>
+</html>

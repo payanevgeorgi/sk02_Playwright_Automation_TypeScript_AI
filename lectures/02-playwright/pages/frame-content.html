@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Studio note form</title>
+	<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+	<main>
+		<h1>Leave a studio note.</h1>
+		<form id="note-form">
+			<label for="frame-input">Your note</label>
+			<input id="frame-input" name="note" type="text" placeholder="Hello from the studio" required>
+			<div class="actions"><button id="frame-button" type="submit">Save note</button></div>
+		</form>
+		<p id="result" class="status" role="status" hidden></p>
+	</main>
+	<script>
+		document.querySelector('#note-form').addEventListener('submit', (event) => {
+			event.preventDefault();
+			const result = document.querySelector('#result');
+			result.textContent = `Saved note: ${document.querySelector('#frame-input').value}`;
+			result.hidden = false;
+		});
+	</script>
+</body>
+</html>

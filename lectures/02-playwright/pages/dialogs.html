@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Browser dialogs | Form &amp; Field</title>
+	<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+	<header class="site-header"><a class="brand" href="index.html">Form &amp; Field.</a><a href="index.html">All examples</a></header>
+	<main>
+		<p class="eyebrow">07 / Browser dialogs</p>
+		<h1>A moment to confirm.</h1>
+		<p class="muted">These are native browser dialogs, not HTML modals. Each action reports its outcome on the page.</p>
+		<section class="panel" aria-label="Alert example">
+			<h2>A simple notification</h2>
+			<button id="show-alert" type="button">Show alert</button>
+			<p id="alert-result" class="status" role="status">No alert shown yet.</p>
+		</section>
+		<section class="panel" aria-label="Confirmation example">
+			<h2>Keep or remove</h2>
+			<p id="saved-item">Saved item: Everyday Notebook</p>
+			<button id="show-confirm" type="button">Delete saved item</button>
+			<p id="confirm-result" class="status" role="status">No deletion requested.</p>
+		</section>
+		<section class="panel" aria-label="Prompt example">
+			<h2>A personal greeting</h2>
+			<button id="show-prompt" type="button">Enter your name</button>
+			<p id="prompt-result" class="status" role="status">No name entered yet.</p>
+		</section>
+		<p class="hint">Register <code>page.once('dialog', ...)</code> before clicking. A registered handler must accept or dismiss the dialog; without a listener, Playwright dismisses dialogs automatically.</p>
+	</main>
+	<footer>Form &amp; Field / Reload to restore the saved item.</footer>
+	<script>
+		document.querySelector('#show-alert').addEventListener('click', () => {
+			window.alert('Welcome to Form & Field!');
+			document.querySelector('#alert-result').textContent = 'Alert closed.';
+		});
+		document.querySelector('#show-confirm').addEventListener('click', (event) => {
+			const confirmed = window.confirm('Delete the saved Everyday Notebook?');
+			document.querySelector('#confirm-result').textContent = confirmed ? 'Saved item deleted.' : 'Deletion cancelled.';
+			if (confirmed) {
+				document.querySelector('#saved-item').hidden = true;
+				event.currentTarget.disabled = true;
+			}
+		});
+		document.querySelector('#show-prompt').addEventListener('click', () => {
+			const name = window.prompt('What is your name?', 'Alex');
+			document.querySelector('#prompt-result').textContent = name === null
+				? 'Name entry cancelled.'
+				: name.trim() ? `Hello, ${name.trim()}!` : 'No name provided.';
+		});
+	</script>
+</body>
+</html>
